@@ -9,22 +9,22 @@ console.log("Start");
 
 createOrder(cart)
     .then((orderId) => {
-        console.log(orderId);
+        console.log("Order ID = "+orderId);
         return orderId;
     })
     .then((orderId) => {
         return proceedToPayment(orderId);
     })
     .then((payment) => {
-        console.log(payment);
+        console.log("Total Payment = "+payment);
         return showOrderSummary(payment);
     })
-    .then((summary) => {
+    .then((summary,payment) => {
         console.log(summary);
-        return updateWallet(summary);
+        return updateWallet(summary,payment);
     })
     .then((wallet) => {
-        console.log(wallet);
+        console.log("Wallet Balance: Rs."+wallet);
     })
     .catch((err) => {
         console.log(err.message);
@@ -38,7 +38,7 @@ function createOrder(cart) {
             const err = new Error("Cart is not Valid");
             reject(err);
         }
-        const orderId = "order Id = 12345";
+        const orderId = "12345";
         if (orderId) {
             setTimeout(function () {
                 resolve(orderId);
@@ -49,7 +49,7 @@ function createOrder(cart) {
 
 function proceedToPayment(orderId) {
     return new Promise((resolve, reject) => {
-        const payment = "Rs: 1200";
+        const payment = [1200];
         if (orderId) {
             resolve(payment);
         } else {
@@ -63,14 +63,14 @@ function showOrderSummary(payment) {
     return new Promise((resolve, reject) => {
         const summary = "payment of "+payment+" Successfull";
         if (payment) {
-            resolve(summary);
+            resolve(summary,payment);
         }
     });
 }
 
-function updateWallet(summary) {
+function updateWallet(summary,payment) {
     return new Promise((resolve, reject) => {
-        wallet = wallet[0] - 1200;
+        wallet = wallet[0] - payment[0];
         if (summary) {
             resolve(wallet);
         }
